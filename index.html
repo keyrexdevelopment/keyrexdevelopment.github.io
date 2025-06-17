@@ -1,70 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Keyrex Development</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: 'Orbitron', sans-serif;
-    }
-
-    html, body {
-      height: 100%;
-      background: black;
       overflow: hidden;
-    }
-
-    #intro {
-      position: fixed;
-      width: 100%;
       height: 100%;
-      background: black;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      background-color: black;
     }
 
-    #enterBtn {
-      padding: 20px 40px;
-      border: 2px solid red;
-      color: red;
-      font-size: 24px;
-      cursor: pointer;
-      background: transparent;
-      transition: all 0.3s ease-in-out;
+    video {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100vw;
+      min-height: 100vh;
+      width: auto;
+      height: auto;
+      z-index: -1;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
     }
 
-    #enterBtn:hover {
-      background: red;
-      color: black;
-    }
-
-    #backgroundVideo {
+    #enterScreen {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: -1;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 1000;
     }
 
-    #content {
+    #enterButton {
+      background: none;
+      border: 2px solid red;
+      padding: 12px 24px;
+      font-size: 20px;
+      color: red;
+      cursor: pointer;
+      animation: pulse 1.8s infinite;
+    }
+
+    #mainContent {
       display: none;
-      position: relative;
-      z-index: 1;
-      animation: fadeIn 3s ease-in-out forwards;
       height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 80px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end; /* Altta tutar */
+      padding-bottom: 40px; /* Alttan boşluk */
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .profile-container {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px 40px;
+      border-radius: 20px;
+      border: 2px solid red;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .profile-container img {
+      width: 130px;
+      height: 130px;
+      border-radius: 12px;
+      border: 2px solid red;
+    }
+
+    .profile-name {
+      font-size: 40px;
+      color: red;
+      animation: fadeInUp 1.2s ease-in-out;
+    }
+
+    .buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      color: white;
+      background-color: transparent;
+      border: 2px solid red;
+      padding: 10px 18px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .buttons a:hover {
+      background-color: red;
+      color: black;
     }
 
     @keyframes fadeIn {
@@ -72,100 +119,69 @@
       to { opacity: 1; }
     }
 
-    .card {
-      border: 2px solid red;
-      border-radius: 15px;
-      padding: 20px 40px;
-      background: rgba(0,0,0,0.7);
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-direction: row;
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .card img {
-      width: 120px;
-      border-radius: 10px;
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.08);
+      }
+      100% {
+        transform: scale(1);
+      }
     }
-
-    .card h1 {
-      color: red;
-      font-size: 32px;
-    }
-
-    .card a {
-      text-decoration: none;
-      color: white;
-      background: black;
-      border: 2px solid red;
-      padding: 10px 20px;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      font-size: 16px;
-    }
-
-    .card a:hover {
-      background: red;
-      color: black;
-    }
-
-    .button-group {
-      display: flex;
-      gap: 15px;
-      margin-top: 10px;
-    }
-
   </style>
 </head>
 <body>
 
-  <!-- Background Video -->
-  <video id="backgroundVideo" preload="auto">
-    <source src="video.mp4" type="video/mp4">
-    Your browser does not support HTML5 video.
-  </video>
+<!-- Video -->
+<video id="bg-video" autoplay muted loop>
+  <source src="videoplayback.mp4" type="video/mp4">
+</video>
 
-  <!-- Intro screen -->
-  <div id="intro">
-    <button id="enterBtn">Click to Enter</button>
-  </div>
+<!-- Click to Enter Screen -->
+<div id="enterScreen">
+  <button id="enterButton">Click to Enter</button>
+</div>
 
-  <!-- Main Content -->
-  <div id="content">
-    <div class="card">
-      <img src="keyrex-avatar.png" alt="keyrex"/>
-      <div>
-        <h1>keyrex</h1>
-        <div class="button-group">
-          <a href="https://spotify.com" target="_blank">Spotify</a>
-          <a href="https://github.com/keyrexdevelopment" target="_blank">GitHub</a>
-        </div>
+<!-- Main Content -->
+<div id="mainContent">
+  <div class="profile-container">
+    <img src="https://i.postimg.cc/Y0G80yHR/13b6cb51ae0d5779920eae633ba00f54-removebg-preview.png" alt="Avatar">
+    <div>
+      <div class="profile-name">keyrex</div>
+      <div class="buttons">
+        <a href="https://open.spotify.com/user/316u4lofuksddnd7jwlzyhci22xi?si=24646f9454804971" target="_blank">Spotify</a>
+        <a href="https://github.com/keyrexdevelopment" target="_blank">GitHub</a>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    const enterBtn = document.getElementById("enterBtn");
-    const intro = document.getElementById("intro");
-    const content = document.getElementById("content");
-    const video = document.getElementById("backgroundVideo");
+<script>
+  const button = document.getElementById("enterButton");
+  const enterScreen = document.getElementById("enterScreen");
+  const mainContent = document.getElementById("mainContent");
+  const video = document.getElementById("bg-video");
 
-    enterBtn.addEventListener("click", () => {
-      // Start video with sound
-      video.muted = false;
-      video.volume = 1.0;
-      video.play().catch(e => console.log("Autoplay error:", e));
-      
-      // Fade out intro screen
-      intro.style.transition = "opacity 1.5s ease-in-out";
-      intro.style.opacity = 0;
-
-      setTimeout(() => {
-        intro.style.display = "none";
-        content.style.display = "flex";
-      }, 1500);
-    });
-  </script>
+  button.addEventListener("click", () => {
+    enterScreen.style.display = "none";
+    mainContent.style.display = "flex";
+    video.muted = false;
+    video.play();
+  });
+</script>
 
 </body>
 </html>
