@@ -9,83 +9,82 @@
     body {
       margin: 0;
       padding: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+      background: #0a0a0a;
       color: white;
       font-family: 'Orbitron', sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      height: 100vh;
     }
 
     h1 {
+      font-size: 4em;
       color: white;
-      font-size: 5em;
-      text-shadow: 0 0 10px #fff, 0 0 20px #00ffff, 0 0 40px #00ffff;
-      margin-bottom: 50px;
-      animation: glow 2s infinite alternate;
+      text-shadow: 0 0 10px #fff, 0 0 20px #00ffff;
+      margin-bottom: 60px;
     }
 
-    @keyframes glow {
-      from {
-        text-shadow: 0 0 10px #fff, 0 0 20px #00ffff, 0 0 40px #00ffff;
-      }
-      to {
-        text-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 60px #00ffff;
-      }
-    }
-
-    .player-container {
-      background: #111;
-      padding: 20px 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px #00ffff66;
+    .player {
+      background-color: #ffaa3c;
+      padding: 15px 30px;
+      border-radius: 50px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      animation: fadein 1.5s ease;
+      box-shadow: 0 0 20px #ffaa3c88;
+    }
+
+    .player button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      margin: 0 15px;
+      color: #222;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .player button:hover {
+      transform: scale(1.2);
+    }
+
+    .disc {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #2c3e50;
+      position: relative;
+      margin-right: 20px;
+      animation: spin 3s linear infinite;
+    }
+
+    .disc::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     audio {
-      width: 300px;
-      margin-top: 10px;
-    }
-
-    .visualizer {
-      margin-top: 30px;
-      display: flex;
-      gap: 5px;
-    }
-
-    .bar {
-      width: 5px;
-      height: 20px;
-      background: #00ffff;
-      animation: bounce 1s infinite ease-in-out;
-    }
-
-    .bar:nth-child(2) { animation-delay: 0.1s; }
-    .bar:nth-child(3) { animation-delay: 0.2s; }
-    .bar:nth-child(4) { animation-delay: 0.3s; }
-    .bar:nth-child(5) { animation-delay: 0.4s; }
-
-    @keyframes bounce {
-      0%, 100% { height: 20px; }
-      50% { height: 60px; }
-    }
-
-    @keyframes fadein {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      display: none;
     }
 
     footer {
       position: absolute;
-      bottom: 15px;
-      color: #999;
+      bottom: 20px;
       font-size: 12px;
+      color: #888;
     }
   </style>
 </head>
@@ -93,23 +92,46 @@
 
   <h1>KEYREX</h1>
 
-  <div class="player-container">
-    <p>Müziği oynat / duraklat:</p>
-    <audio controls autoplay loop>
-      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-      Tarayıcın bu özelliği desteklemiyor.
-    </audio>
-
-    <div class="visualizer">
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-    </div>
+  <div class="player">
+    <div class="disc"></div>
+    <button id="prev">⏮️</button>
+    <button id="play">▶️</button>
+    <button id="next">⏭️</button>
+    <audio id="audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
   </div>
 
   <footer>© 2025 Keyrex</footer>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('play');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    let isPlaying = false;
+
+    playBtn.addEventListener('click', () => {
+      if (!isPlaying) {
+        audio.play();
+        playBtn.textContent = '⏸️';
+        isPlaying = true;
+      } else {
+        audio.pause();
+        playBtn.textContent = '▶️';
+        isPlaying = false;
+      }
+    });
+
+    // dummy next/prev (tek şarkı için)
+    nextBtn.addEventListener('click', () => {
+      audio.currentTime = 0;
+      audio.play();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      audio.currentTime = 0;
+      audio.play();
+    });
+  </script>
 
 </body>
 </html>
