@@ -1,51 +1,31 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Keyrex Development</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keyrex</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background: black;
     }
-
-    iframe {
-      position: fixed;
+    video {
+      position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      pointer-events: none; /* Tıklanamaz olsun */
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
       z-index: -1;
     }
-
-    /* Sağ tıklamayı engelle */
-    body {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-    }
   </style>
-
-  <script>
-    // Sağ tıklamayı tamamen engelle
-    document.addEventListener("contextmenu", e => e.preventDefault());
-  </script>
 </head>
 <body>
-  <iframe src="https://streamable.com/e/jjlw81" allowfullscreen></iframe>
+  <video autoplay muted loop playsinline>
+    <source src="videoplayback.mp4" type="video/mp4" />
+    Tarayıcınız video öğesini desteklemiyor.
+  </video>
 </body>
 </html>
