@@ -8,10 +8,9 @@
 
     body {
       margin: 0;
-      padding: 0;
       background: #0a0a0a;
-      color: white;
       font-family: 'Orbitron', sans-serif;
+      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -22,12 +21,12 @@
     h1 {
       font-size: 4em;
       color: white;
-      text-shadow: 0 0 10px #fff, 0 0 20px #00ffff;
+      text-shadow: 0 0 10px white, 0 0 20px #00ffff;
       margin-bottom: 60px;
     }
 
     .player {
-      background-color: #ffaa3c;
+      background: #ffaa3c;
       padding: 15px 30px;
       border-radius: 50px;
       display: flex;
@@ -35,26 +34,11 @@
       box-shadow: 0 0 20px #ffaa3c88;
     }
 
-    .player button {
-      background: none;
-      border: none;
-      font-size: 24px;
-      margin: 0 15px;
-      color: #222;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .player button:hover {
-      transform: scale(1.2);
-    }
-
     .disc {
       width: 50px;
       height: 50px;
       border-radius: 50%;
       background: #2c3e50;
-      position: relative;
       margin-right: 20px;
       animation: spin 3s linear infinite;
     }
@@ -71,13 +55,22 @@
       transform: translate(-50%, -50%);
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .player button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      margin: 0 15px;
+      color: #222;
+      cursor: pointer;
+      transition: transform 0.2s ease;
     }
 
-    audio {
-      display: none;
+    .player button:hover {
+      transform: scale(1.2);
+    }
+
+    iframe {
+      display: none; /* YouTube videosu görünmez olacak */
     }
 
     footer {
@@ -92,44 +85,63 @@
 
   <h1>KEYREX</h1>
 
+  <!-- Custom Player -->
   <div class="player">
     <div class="disc"></div>
     <button id="prev">⏮️</button>
     <button id="play">▶️</button>
     <button id="next">⏭️</button>
-    <audio id="audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
   </div>
+
+  <!-- YouTube IFrame (hidden) -->
+  <div id="player"></div>
 
   <footer>© 2025 Keyrex</footer>
 
+  <!-- YouTube API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
-    const audio = document.getElementById('audio');
-    const playBtn = document.getElementById('play');
-    const prevBtn = document.getElementById('prev');
-    const nextBtn = document.getElementById('next');
+    let player;
     let isPlaying = false;
 
-    playBtn.addEventListener('click', () => {
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        videoId: 'X1H5sOc_14U',
+        playerVars: {
+          autoplay: 0,
+          loop: 1,
+          playlist: 'X1H5sOc_14U'
+        },
+        events: {
+          onReady: () => {
+            // optional: player.mute();
+          }
+        }
+      });
+    }
+
+    document.getElementById('play').addEventListener('click', () => {
       if (!isPlaying) {
-        audio.play();
-        playBtn.textContent = '⏸️';
+        player.playVideo();
+        document.getElementById('play').textContent = '⏸️';
         isPlaying = true;
       } else {
-        audio.pause();
-        playBtn.textContent = '▶️';
+        player.pauseVideo();
+        document.getElementById('play').textContent = '▶️';
         isPlaying = false;
       }
     });
 
-    // dummy next/prev (tek şarkı için)
-    nextBtn.addEventListener('click', () => {
-      audio.currentTime = 0;
-      audio.play();
+    document.getElementById('next').addEventListener('click', () => {
+      player.seekTo(0);
+      player.playVideo();
     });
 
-    prevBtn.addEventListener('click', () => {
-      audio.currentTime = 0;
-      audio.play();
+    document.getElementById('prev').addEventListener('click', () => {
+      player.seekTo(0);
+      player.playVideo();
     });
   </script>
 
