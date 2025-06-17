@@ -1,35 +1,29 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Keyrex Development</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
       height: 100%;
-      background-color: black;
-    }
-
-    .video-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
       overflow: hidden;
-      z-index: -1;
-      pointer-events: none;
+      background: black;
     }
 
-    .video-container iframe {
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
+    video.background-video {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -1;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
       pointer-events: none;
     }
 
@@ -41,8 +35,8 @@
     body::after {
       content: "";
       position: fixed;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       top: 0;
       left: 0;
       z-index: 1;
@@ -50,13 +44,9 @@
   </style>
 </head>
 <body oncontextmenu="return false">
-  <div class="video-container">
-    <iframe
-      src="https://www.youtube.com/embed/1m9qFiZfWVE?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playlist=1m9qFiZfWVE&playsinline=1"
-      frameborder="0"
-      allow="autoplay; encrypted-media"
-      allowfullscreen
-    ></iframe>
-  </div>
+  <video class="background-video" autoplay loop muted playsinline>
+    <source src="videoplayback.mp4" type="video/mp4">
+    Tarayıcınız video öğesini desteklemiyor.
+  </video>
 </body>
 </html>
