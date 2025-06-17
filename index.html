@@ -12,13 +12,13 @@
       background: black;
     }
 
-    iframe {
+    #ytbg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      border: none;
+      pointer-events: none; /* Kullanıcı tıklayamaz */
       z-index: -1;
     }
 
@@ -27,67 +27,63 @@
       top: 20px;
       right: 20px;
       z-index: 10;
-      background: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.1);
       color: white;
-      border: 2px solid white;
+      border: 1px solid white;
       padding: 10px 15px;
       border-radius: 8px;
       font-family: sans-serif;
       cursor: pointer;
-      transition: 0.3s;
-      backdrop-filter: blur(5px);
-    }
-
-    #mute-btn:hover {
-      background: rgba(255,255,255,0.35);
+      backdrop-filter: blur(4px);
     }
   </style>
 </head>
 <body>
 
+  <!-- Video iframe -->
   <iframe
-    id="ytplayer"
-    src="https://www.youtube-nocookie.com/embed/1m9qFiZfWVE?autoplay=1&controls=0&mute=1&loop=1&playlist=1m9qFiZfWVE&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&showinfo=0&enablejsapi=1"
+    id="ytbg"
+    src="https://www.youtube-nocookie.com/embed/1m9qFiZfWVE?autoplay=1&controls=0&showinfo=0&rel=0&loop=1&mute=1&playlist=1m9qFiZfWVE&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1&enablejsapi=1"
+    frameborder="0"
     allow="autoplay"
     allowfullscreen
   ></iframe>
 
+  <!-- Mute kontrol butonu -->
   <button id="mute-btn">🔇 Sesi Aç</button>
 
   <script>
     // Başlık animasyonu
-    const titleText = "Keyrex";
-    let index = 0;
+    const title = "Keyrex";
+    let i = 0;
     function animateTitle() {
-      document.title = titleText.substring(0, index);
-      index++;
-      if (index > titleText.length) index = 0;
+      document.title = title.slice(0, i);
+      i++;
+      if (i > title.length) i = 0;
       setTimeout(animateTitle, 300);
     }
     animateTitle();
 
-    // YouTube API
+    // YouTube API ile ses aç/kapat
     let player;
     let isMuted = true;
 
     function onYouTubeIframeAPIReady() {
-      player = new YT.Player('ytplayer', {
+      player = new YT.Player('ytbg', {
         events: {
-          'onReady': onPlayerReady
-        }
-      });
-    }
-
-    function onPlayerReady(event) {
-      document.getElementById('mute-btn').addEventListener('click', () => {
-        if (isMuted) {
-          player.unMute();
-          isMuted = false;
-          document.getElementById('mute-btn').innerText = "🔊 Sesi Kapat";
-        } else {
-          player.mute();
-          isMuted = true;
-          document.getElementById('mute-btn').innerText = "🔇 Sesi Aç";
+          'onReady': function (event) {
+            document.getElementById('mute-btn').addEventListener('click', () => {
+              if (isMuted) {
+                player.unMute();
+                isMuted = false;
+                document.getElementById('mute-btn').innerText = "🔊 Sesi Kapat";
+              } else {
+                player.mute();
+                isMuted = true;
+                document.getElementById('mute-btn').innerText = "🔇 Sesi Aç";
+              }
+            });
+          }
         }
       });
     }
