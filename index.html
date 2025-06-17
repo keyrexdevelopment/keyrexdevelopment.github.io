@@ -1,96 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title></title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
       overflow: hidden;
-      background: black;
+      height: 100%;
     }
 
-    #ytbg {
+    #background-video {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100vw;
       height: 100vh;
-      pointer-events: none;
       z-index: -1;
+      pointer-events: none;
     }
 
-    #mute-btn {
+    #mute-button {
       position: fixed;
       top: 20px;
       right: 20px;
-      z-index: 10;
-      background: rgba(255,255,255,0.1);
+      z-index: 999;
+      background-color: rgba(0, 0, 0, 0.7);
       color: white;
-      border: 1px solid white;
-      padding: 10px 15px;
-      border-radius: 8px;
+      border: 1px solid #ccc;
+      padding: 8px 14px;
       font-family: sans-serif;
+      border-radius: 8px;
       cursor: pointer;
-      backdrop-filter: blur(4px);
+    }
+
+    /* Başlık animasyonu */
+    @keyframes yazAnimasyonu {
+      0% { content: "K"; }
+      14% { content: "KE"; }
+      28% { content: "KEY"; }
+      42% { content: "KEYR"; }
+      56% { content: "KEYRE"; }
+      70% { content: "KEYREX"; }
+      85% { content: ""; }
+      100% { content: "K"; }
+    }
+
+    title::before {
+      animation: yazAnimasyonu 5s infinite steps(1);
+      content: "K";
     }
   </style>
 </head>
 <body>
 
-  <!-- Video iframe -->
-  <iframe
-    id="ytbg"
-    src="https://www.youtube-nocookie.com/embed/1m9qFiZfWVE?autoplay=1&controls=0&showinfo=0&rel=0&loop=1&mute=1&playlist=1m9qFiZfWVE&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1&enablejsapi=1"
-    frameborder="0"
-    allow="autoplay"
-    allowfullscreen
-  ></iframe>
+  <div id="player"></div>
 
-  <!-- Mute kontrol butonu -->
-  <button id="mute-btn">🔇 Sesi Aç</button>
+  <button id="mute-button">🔇 Sesi Aç</button>
 
   <script>
-    // Başlık animasyonu
-    const title = "Keyrex";
-    let i = 0;
-    function animateTitle() {
-      document.title = title.slice(0, i);
-      i++;
-      if (i > title.length) i = 0;
-      setTimeout(animateTitle, 300);
-    }
-    animateTitle();
+    // YouTube API script
+    let tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
 
-    // YouTube API ile sesi aç/kapat
     let player;
-    let isMuted = true;
+    let muted = true;
 
     function onYouTubeIframeAPIReady() {
-      player = new YT.Player('ytbg', {
+      player = new YT.Player('player', {
+        videoId: '1m9qFiZfWVE',
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          showinfo: 0,
+          modestbranding: 1,
+          loop: 1,
+          fs: 0,
+          cc_load_policy: 0,
+          iv_load_policy: 3,
+          autohide: 1,
+          rel: 0,
+          mute: 1,
+          playlist: '1m9qFiZfWVE',
+          disablekb: 1
+        },
         events: {
-          'onReady': function (event) {
-            document.getElementById('mute-btn').addEventListener('click', () => {
-              if (isMuted) {
-                player.unMute();
-                isMuted = false;
-                document.getElementById('mute-btn').innerText = "🔊 Sesi Kapat";
-              } else {
-                player.mute();
-                isMuted = true;
-                document.getElementById('mute-btn').innerText = "🔇 Sesi Aç";
-              }
-            });
+          onReady: function (e) {
+            e.target.playVideo();
           }
         }
       });
     }
 
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.body.appendChild(tag);
+    const btn = document.getElementById("mute-button");
+    btn.addEventListener("click", () => {
+      if (muted) {
+        player.unMute();
+        btn.innerText = "🔊 Sesi Kapat";
+        muted = false;
+      } else {
+        player.mute();
+        btn.innerText = "🔇 Sesi Aç";
+        muted = true;
+      }
+    });
+
+    // Arka plan boyutu ayarı
+    const iframe = document.getElementById("player");
+    iframe.style.position = "fixed";
+    iframe.style.top = "0";
+    iframe.style.left = "0";
+    iframe.style.width = "100vw";
+    iframe.style.height = "100vh";
+    iframe.style.zIndex = "-1";
+    iframe.style.pointerEvents = "none";
   </script>
 
 </body>
