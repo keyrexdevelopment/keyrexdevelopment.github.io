@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Keyrex Development</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -13,138 +13,131 @@
       font-family: 'Orbitron', sans-serif;
     }
 
-    body, html {
+    html, body {
       height: 100%;
+      background: black;
       overflow: hidden;
     }
 
     #intro {
-      position: absolute;
+      position: fixed;
       width: 100%;
       height: 100%;
       background: black;
+      z-index: 10;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 10;
-      transition: opacity 2s ease;
     }
 
-    #enter-btn {
-      background: none;
+    #enterBtn {
+      padding: 20px 40px;
       border: 2px solid red;
       color: red;
       font-size: 24px;
-      padding: 15px 30px;
       cursor: pointer;
-      border-radius: 10px;
-      transition: all 0.3s ease;
+      background: transparent;
+      transition: all 0.3s ease-in-out;
     }
 
-    #enter-btn:hover {
+    #enterBtn:hover {
       background: red;
       color: black;
     }
 
-    #content {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 2s ease;
-    }
-
-    #background-video {
+    #backgroundVideo {
       position: fixed;
-      right: 0;
-      bottom: 0;
-      min-width: 100%;
-      min-height: 100%;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       object-fit: cover;
       z-index: -1;
     }
 
-    .profile-container {
+    #content {
+      display: none;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 3s ease-in-out forwards;
+      height: 100%;
       display: flex;
-      align-items: center;
-      gap: 30px;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 20px 40px;
-      border-radius: 20px;
-      border: 2px solid red;
-      position: absolute;
-      bottom: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      animation: fadeIn 2s ease-in-out;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 80px;
     }
 
-    .profile-container img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .card {
+      border: 2px solid red;
+      border-radius: 15px;
+      padding: 20px 40px;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-direction: row;
+    }
+
+    .card img {
+      width: 120px;
       border-radius: 10px;
     }
 
-    .profile-name {
+    .card h1 {
       color: red;
       font-size: 32px;
     }
 
-    .buttons {
-      display: flex;
-      gap: 15px;
-    }
-
-    .buttons a {
+    .card a {
       text-decoration: none;
       color: white;
+      background: black;
       border: 2px solid red;
       padding: 10px 20px;
       border-radius: 8px;
-      transition: 0.3s;
+      transition: all 0.3s ease;
       font-size: 16px;
     }
 
-    .buttons a:hover {
-      background-color: red;
+    .card a:hover {
+      background: red;
       color: black;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translate(-50%, 50%);
-      }
-      to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
+    .button-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
     }
+
   </style>
 </head>
 <body>
 
-  <!-- GİRİŞ EKRANI -->
+  <!-- Background Video -->
+  <video id="backgroundVideo" preload="auto">
+    <source src="video.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+
+  <!-- Intro screen -->
   <div id="intro">
-    <button id="enter-btn">Click to Enter</button>
+    <button id="enterBtn">Click to Enter</button>
   </div>
 
-  <!-- VİDEO ARKA PLAN -->
+  <!-- Main Content -->
   <div id="content">
-    <video autoplay muted loop id="background-video">
-      <source src="videoplayback.mp4" type="video/mp4">
-      Tarayıcınız video etiketini desteklemiyor.
-    </video>
-
-    <!-- PROFİL KARTI -->
-    <div class="profile-container">
-      <img src="https://i.postimg.cc/Y0G80yHR/13b6cb51ae0d5779920eae633ba00f54-removebg-preview.png" alt="discord-profile">
+    <div class="card">
+      <img src="keyrex-avatar.png" alt="keyrex"/>
       <div>
-        <div class="profile-name">keyrex</div>
-        <div class="buttons">
-          <a href="https://open.spotify.com/user/316u4lofuksddnd7jwlzyhci22xi?si=24646f9454804971" target="_blank">Spotify</a>
+        <h1>keyrex</h1>
+        <div class="button-group">
+          <a href="https://spotify.com" target="_blank">Spotify</a>
           <a href="https://github.com/keyrexdevelopment" target="_blank">GitHub</a>
         </div>
       </div>
@@ -152,18 +145,27 @@
   </div>
 
   <script>
-    const enterBtn = document.getElementById('enter-btn');
-    const intro = document.getElementById('intro');
-    const content = document.getElementById('content');
+    const enterBtn = document.getElementById("enterBtn");
+    const intro = document.getElementById("intro");
+    const content = document.getElementById("content");
+    const video = document.getElementById("backgroundVideo");
 
-    enterBtn.addEventListener('click', () => {
-      intro.style.opacity = '0';
+    enterBtn.addEventListener("click", () => {
+      // Start video with sound
+      video.muted = false;
+      video.volume = 1.0;
+      video.play().catch(e => console.log("Autoplay error:", e));
+      
+      // Fade out intro screen
+      intro.style.transition = "opacity 1.5s ease-in-out";
+      intro.style.opacity = 0;
+
       setTimeout(() => {
-        intro.style.display = 'none';
-        content.style.opacity = '1';
-        content.style.pointerEvents = 'auto';
-      }, 2000);
+        intro.style.display = "none";
+        content.style.display = "flex";
+      }, 1500);
     });
   </script>
+
 </body>
 </html>
