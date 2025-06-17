@@ -1,31 +1,91 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Keyrex</title>
+  <meta charset="UTF-8">
+  <title>Keyrex Development</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
       height: 100%;
       overflow: hidden;
+      font-family: Arial, sans-serif;
     }
-    video {
+
+    #enter-screen {
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      cursor: pointer;
+      flex-direction: column;
+    }
+
+    #enter-screen h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    #bgVideo {
       width: 100vw;
       height: 100vh;
       object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
       z-index: -1;
+    }
+
+    #content {
+      z-index: 2;
+      position: relative;
+      color: white;
+      text-align: center;
+      padding-top: 20vh;
     }
   </style>
 </head>
 <body>
-  <video autoplay muted loop playsinline>
-    <source src="videoplayback.mp4" type="video/mp4" />
-    Tarayıcınız video öğesini desteklemiyor.
+
+  <!-- Giriş ekranı -->
+  <div id="enter-screen" onclick="startSite()">
+    <h1>Click to Enter</h1>
+    <p>Enter to start the experience</p>
+  </div>
+
+  <!-- Arka plan video -->
+  <video id="bgVideo" loop preload="auto">
+    <source src="videoplayback.mp4" type="video/mp4">
+    Tarayıcınız video etiketini desteklemiyor.
   </video>
+
+  <!-- Video üstü içerik -->
+  <div id="content">
+    <h1>Keyrex Development</h1>
+    <p>Professional Experience. Enhanced by Design.</p>
+  </div>
+
+  <script>
+    function startSite() {
+      const video = document.getElementById("bgVideo");
+      const enterScreen = document.getElementById("enter-screen");
+      video.muted = false;
+      video.volume = 1.0;
+      video.play();
+      enterScreen.style.display = "none";
+    }
+  </script>
+
 </body>
 </html>
