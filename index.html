@@ -4,43 +4,48 @@
   <meta charset="UTF-8">
   <title>Keyrex</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap');
 
     body {
       margin: 0;
       padding: 0;
-      background: #0a0a0a;
+      height: 100vh;
+      background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
       color: white;
       font-family: 'Orbitron', sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
       overflow: hidden;
     }
 
     h1 {
-      font-size: 4em;
-      margin-bottom: 40px;
-      color: #00ffff;
-      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+      color: white;
+      font-size: 5em;
+      text-shadow: 0 0 10px #fff, 0 0 20px #00ffff, 0 0 40px #00ffff;
+      margin-bottom: 50px;
+      animation: glow 2s infinite alternate;
     }
 
-    iframe {
-      border: none;
-      width: 100%;
-      max-width: 560px;
-      height: 315px;
-      border-radius: 15px;
-      box-shadow: 0 0 30px #00ffff44;
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #00ffff, 0 0 40px #00ffff;
+      }
+      to {
+        text-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 60px #00ffff;
+      }
     }
 
-    .controls {
-      margin-top: 20px;
+    .player-container {
+      background: #111;
+      padding: 20px 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #00ffff66;
       display: flex;
       flex-direction: column;
       align-items: center;
+      animation: fadein 1.5s ease;
     }
 
     audio {
@@ -48,10 +53,38 @@
       margin-top: 10px;
     }
 
+    .visualizer {
+      margin-top: 30px;
+      display: flex;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 5px;
+      height: 20px;
+      background: #00ffff;
+      animation: bounce 1s infinite ease-in-out;
+    }
+
+    .bar:nth-child(2) { animation-delay: 0.1s; }
+    .bar:nth-child(3) { animation-delay: 0.2s; }
+    .bar:nth-child(4) { animation-delay: 0.3s; }
+    .bar:nth-child(5) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 100% { height: 20px; }
+      50% { height: 60px; }
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     footer {
       position: absolute;
-      bottom: 10px;
-      color: #888;
+      bottom: 15px;
+      color: #999;
       font-size: 12px;
     }
   </style>
@@ -60,21 +93,23 @@
 
   <h1>KEYREX</h1>
 
-  <div class="controls">
-    <!-- YouTube embed (no controls shown directly) -->
-    <iframe id="ytplayer" src="https://www.youtube.com/embed/X1H5sOc_14U?autoplay=1&loop=1&playlist=X1H5sOc_14U&controls=0&mute=0" allow="autoplay"></iframe>
-
-    <!-- Audio control bar (optional) -->
-    <p style="margin-top: 15px;">Müziği kontrol et:</p>
-    <audio controls>
-      <source src="https://yt1s.com/en/download-youtube-to-mp3/X1H5sOc_14U" type="audio/mpeg">
-      Tarayıcınız audio elementini desteklemiyor.
+  <div class="player-container">
+    <p>Müziği oynat / duraklat:</p>
+    <audio controls autoplay loop>
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+      Tarayıcın bu özelliği desteklemiyor.
     </audio>
+
+    <div class="visualizer">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
   </div>
 
-  <footer>
-    © 2025 Keyrex
-  </footer>
+  <footer>© 2025 Keyrex</footer>
 
 </body>
 </html>
