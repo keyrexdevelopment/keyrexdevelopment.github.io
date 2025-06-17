@@ -2,79 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Keyrex</title>
+  <title></title> <!-- JS ile dinamik yazacağız -->
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      width: 100%;
       height: 100%;
-      background: black;
       overflow: hidden;
-      font-family: Arial, sans-serif;
     }
 
-    .enter-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: black;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      letter-spacing: 2px;
-      cursor: pointer;
-      z-index: 10;
-      user-select: none;
-      transition: opacity 0.5s ease;
-    }
-
-    #video-container {
+    #bg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       z-index: -1;
-      pointer-events: none;
     }
 
     iframe {
       width: 100vw;
       height: 100vh;
       border: none;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="enter-screen" id="enterBtn">CLICK TO ENTER</div>
-  <div id="video-container"></div>
+  <div id="bg"></div>
 
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
     let player;
 
     function onYouTubeIframeAPIReady() {
-      // boşta beklesin, kullanıcı tıklamadan yüklenmeyecek
-    }
-
-    document.getElementById("enterBtn").addEventListener("click", () => {
-      document.getElementById("enterBtn").style.opacity = "0";
-      setTimeout(() => {
-        document.getElementById("enterBtn").style.display = "none";
-      }, 500);
-
-      // YouTube player oluştur
-      player = new YT.Player('video-container', {
+      player = new YT.Player('bg', {
         videoId: '1m9qFiZfWVE',
         playerVars: {
           autoplay: 1,
@@ -90,7 +53,7 @@
         events: {
           onReady: (event) => {
             event.target.playVideo();
-            event.target.unMute(); // sesi açık başlat
+            event.target.unMute();
           },
           onStateChange: (event) => {
             if (event.data === YT.PlayerState.ENDED) {
@@ -100,7 +63,19 @@
           }
         }
       });
-    });
+    }
+
+    // 🔤 Başlık animasyonu
+    const titleText = "Keyrex";
+    let index = 0;
+    function animateTitle() {
+      if (index <= titleText.length) {
+        document.title = titleText.substring(0, index);
+        index++;
+        setTimeout(animateTitle, 300); // hız ayarı
+      }
+    }
+    animateTitle();
   </script>
 
 </body>
