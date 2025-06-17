@@ -2,79 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title></title> <!-- JS ile dinamik yazacağız -->
+  <title></title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
+      background: black;
     }
 
-    #bg {
+    #video-bg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       z-index: -1;
+      pointer-events: none;
     }
 
     iframe {
       width: 100vw;
       height: 100vh;
       border: none;
-      pointer-events: none;
     }
   </style>
 </head>
 <body>
 
-  <div id="bg"></div>
+  <div id="video-bg">
+    <iframe
+      src="https://www.youtube.com/embed/1m9qFiZfWVE?autoplay=1&controls=0&mute=0&showinfo=0&rel=0&loop=1&playlist=1m9qFiZfWVE&modestbranding=1"
+      allow="autoplay"
+      allowfullscreen
+    ></iframe>
+  </div>
 
-  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
-    let player;
-
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('bg', {
-        videoId: '1m9qFiZfWVE',
-        playerVars: {
-          autoplay: 1,
-          controls: 0,
-          disablekb: 1,
-          loop: 1,
-          playlist: '1m9qFiZfWVE',
-          modestbranding: 1,
-          rel: 0,
-          showinfo: 0,
-          fs: 0
-        },
-        events: {
-          onReady: (event) => {
-            event.target.playVideo();
-            event.target.unMute();
-          },
-          onStateChange: (event) => {
-            if (event.data === YT.PlayerState.ENDED) {
-              player.seekTo(0);
-              player.playVideo();
-            }
-          }
-        }
-      });
-    }
-
-    // 🔤 Başlık animasyonu
+    // 🔁 Başlık animasyonu tekrar etsin
     const titleText = "Keyrex";
     let index = 0;
+
     function animateTitle() {
       if (index <= titleText.length) {
         document.title = titleText.substring(0, index);
         index++;
-        setTimeout(animateTitle, 300); // hız ayarı
+      } else {
+        index = 0; // başa sar
       }
+      setTimeout(animateTitle, 300); // hız
     }
+
     animateTitle();
   </script>
 
