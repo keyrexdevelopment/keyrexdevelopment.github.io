@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title></title>
   <style>
     html, body {
@@ -12,49 +12,89 @@
       background: black;
     }
 
-    #video-bg {
+    iframe {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
+      border: none;
       z-index: -1;
-      pointer-events: none;
     }
 
-    iframe {
-      width: 100vw;
-      height: 100vh;
-      border: none;
+    #mute-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: 2px solid white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-family: sans-serif;
+      cursor: pointer;
+      transition: 0.3s;
+      backdrop-filter: blur(5px);
+    }
+
+    #mute-btn:hover {
+      background: rgba(255,255,255,0.35);
     }
   </style>
 </head>
 <body>
 
-  <div id="video-bg">
-    <iframe
-      src="https://www.youtube.com/embed/1m9qFiZfWVE?autoplay=1&controls=0&mute=0&showinfo=0&rel=0&loop=1&playlist=1m9qFiZfWVE&modestbranding=1"
-      allow="autoplay"
-      allowfullscreen
-    ></iframe>
-  </div>
+  <iframe
+    id="ytplayer"
+    src="https://www.youtube-nocookie.com/embed/1m9qFiZfWVE?autoplay=1&controls=0&mute=1&loop=1&playlist=1m9qFiZfWVE&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&showinfo=0&enablejsapi=1"
+    allow="autoplay"
+    allowfullscreen
+  ></iframe>
+
+  <button id="mute-btn">🔇 Sesi Aç</button>
 
   <script>
-    // 🔁 Başlık animasyonu tekrar etsin
+    // Başlık animasyonu
     const titleText = "Keyrex";
     let index = 0;
-
     function animateTitle() {
-      if (index <= titleText.length) {
-        document.title = titleText.substring(0, index);
-        index++;
-      } else {
-        index = 0; // başa sar
-      }
-      setTimeout(animateTitle, 300); // hız
+      document.title = titleText.substring(0, index);
+      index++;
+      if (index > titleText.length) index = 0;
+      setTimeout(animateTitle, 300);
+    }
+    animateTitle();
+
+    // YouTube API
+    let player;
+    let isMuted = true;
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('ytplayer', {
+        events: {
+          'onReady': onPlayerReady
+        }
+      });
     }
 
-    animateTitle();
+    function onPlayerReady(event) {
+      document.getElementById('mute-btn').addEventListener('click', () => {
+        if (isMuted) {
+          player.unMute();
+          isMuted = false;
+          document.getElementById('mute-btn').innerText = "🔊 Sesi Kapat";
+        } else {
+          player.mute();
+          isMuted = true;
+          document.getElementById('mute-btn').innerText = "🔇 Sesi Aç";
+        }
+      });
+    }
+
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
   </script>
 
 </body>
