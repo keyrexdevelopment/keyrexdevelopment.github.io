@@ -1,10 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Benim Sitem</title>
+  <title>Keyrex</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0a0a0a;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 4em;
+      margin-bottom: 40px;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    }
+
+    iframe {
+      border: none;
+      width: 100%;
+      max-width: 560px;
+      height: 315px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px #00ffff44;
+    }
+
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    audio {
+      width: 300px;
+      margin-top: 10px;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 10px;
+      color: #888;
+      font-size: 12px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Merhaba, GitHub Pages!</h1>
+
+  <h1>KEYREX</h1>
+
+  <div class="controls">
+    <!-- YouTube embed (no controls shown directly) -->
+    <iframe id="ytplayer" src="https://www.youtube.com/embed/X1H5sOc_14U?autoplay=1&loop=1&playlist=X1H5sOc_14U&controls=0&mute=0" allow="autoplay"></iframe>
+
+    <!-- Audio control bar (optional) -->
+    <p style="margin-top: 15px;">Müziği kontrol et:</p>
+    <audio controls>
+      <source src="https://yt1s.com/en/download-youtube-to-mp3/X1H5sOc_14U" type="audio/mpeg">
+      Tarayıcınız audio elementini desteklemiyor.
+    </audio>
+  </div>
+
+  <footer>
+    © 2025 Keyrex
+  </footer>
+
 </body>
 </html>
