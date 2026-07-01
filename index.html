@@ -209,61 +209,26 @@
       position: relative;
     }
 
-    /* Animated Concentric Circles behind loading */
+    /* Classy Loader GIF container */
     .classy-loader-art {
       position: relative;
-      width: 90px;
-      height: 90px;
+      width: 120px;
+      height: 120px;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 5px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 5px;
+      background: var(--card-inner-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 10px 25px var(--shadow-color);
     }
 
-    .loader-circle-outer {
-      position: absolute;
+    .classy-loader-gif {
       width: 100%;
       height: 100%;
-      border: 2px solid transparent;
-      border-top-color: var(--accent);
-      border-bottom-color: var(--accent);
-      border-radius: 50%;
-      animation: spinClassy 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-    }
-
-    .loader-circle-inner {
-      position: absolute;
-      width: 70%;
-      height: 70%;
-      border: 2px solid transparent;
-      border-left-color: rgb(var(--cursor-color));
-      border-right-color: rgb(var(--cursor-color));
-      border-radius: 50%;
-      animation: spinClassyReverse 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-    }
-
-    .loader-logo-core {
-      width: 32px;
-      height: 32px;
-      background: var(--accent-gradient);
-      border-radius: 50%;
-      box-shadow: 0 0 15px var(--accent);
-      animation: pulseCore 2s infinite ease-in-out;
-    }
-
-    @keyframes spinClassy {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @keyframes spinClassyReverse {
-      0% { transform: rotate(360deg); }
-      100% { transform: rotate(0deg); }
-    }
-
-    @keyframes pulseCore {
-      0%, 100% { transform: scale(1); opacity: 0.85; }
-      50% { transform: scale(1.15); opacity: 1; }
+      object-fit: contain;
     }
 
     .loader-header {
@@ -1203,9 +1168,7 @@
   <div id="enterScreen">
     <div class="loader-card">
       <div class="classy-loader-art">
-        <div class="loader-circle-outer"></div>
-        <div class="loader-circle-inner"></div>
-        <div class="loader-logo-core"></div>
+        <img class="classy-loader-gif" src="https://media.tenor.com/ifD1GaekwpoAAAAj/uma-musume-agnes-tachyon.gif" alt="Agnes Tachyon loading">
       </div>
       
       <div class="loader-header">
@@ -1379,7 +1342,7 @@
                 </a>
               </div>
               
-              <h2 class="section-title" style="margin-top: 30px; margin-bottom: 20px;">Now Playing (MP3 / Synth)</h2>
+              <h2 class="section-title" style="margin-top: 30px; margin-bottom: 20px;">Now Playing</h2>
               
               <!-- Custom Interactive Spotify Card -->
               <div class="spotify-card" id="spotifyCard">
@@ -1408,8 +1371,8 @@
                   </div>
                   
                   <div style="flex-grow: 1; min-width: 0;">
-                    <div class="song-title" id="songTitle">Infinite Ambient Swell</div>
-                    <div class="song-artist" id="songArtist">Synthesized Web Audio</div>
+                    <div class="song-title" id="songTitle">Gölge Haramileri</div>
+                    <div class="song-artist" id="songArtist">Sagopa Kajmer</div>
                   </div>
                 </div>
 
@@ -1419,7 +1382,7 @@
                   </div>
                   <div class="spotify-time">
                     <span id="spotifyCurrentTime">0:00</span>
-                    <span id="spotifyTotalTime">1:40</span>
+                    <span id="spotifyTotalTime">5:42</span>
                   </div>
                   
                   <div class="spotify-controls">
@@ -2161,16 +2124,9 @@
     };
 
     function loadPlaybackDetails(isMP3 = false) {
-      if (isMP3) {
-        // If MP3 is playing, show MP3 metadata or fetch config variables
-        songTitleText.textContent = SONG_TITLE !== "Infinite Ambient Swell" ? SONG_TITLE : "Local Playlist Track";
-        songArtistText.textContent = SONG_ARTIST !== "Synthesized Web Audio" ? SONG_ARTIST : "Local MP3 File";
-      } else {
-        // If synth loop is playing, display Synth info
-        songTitleText.textContent = "Infinite Ambient Swell";
-        songArtistText.textContent = "Synthesized Web Audio";
-        totalTimeText.textContent = formatTime(SONG_DURATION_SECONDS);
-      }
+      songTitleText.textContent = SONG_TITLE;
+      songArtistText.textContent = SONG_ARTIST;
+      totalTimeText.textContent = formatTime(SONG_DURATION_SECONDS);
     }
 
     function updateSpotifyPlayUI(isPlaying, isMP3 = false) {
