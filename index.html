@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>keyrex | Creative Developer</title>
+  <script>
+    // Apply dark theme immediately if saved to prevent screen flashing
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
   <!-- Premium Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1425,8 +1431,7 @@
                     </button>
                   </div>
                 </div>
-                
-                <div class="synth-label" id="playerModeLabel">Sanal sentezleyici çalıyor. 'audio.mp3' yükleyerek kendi şarkınızı çalabilirsiniz!</div>
+
               </div>
 
             </div>
@@ -1446,12 +1451,12 @@
     const DISCORD_TAG = 'keyrex'; // Username for copying
 
     // SONG CONFIGURATION (For local audio.mp3 file - edits will apply to Spotify panel)
-    const SONG_TITLE = "Infinite Ambient Swell";
-    const SONG_ARTIST = "Synthesized Web Audio";
-    const SONG_DURATION_SECONDS = 100; // Default fallback duration (1:40)
+    const SONG_TITLE = "Gölge Haramileri";
+    const SONG_ARTIST = "Sagopa Kajmer";
+    const SONG_DURATION_SECONDS = 342; // Default fallback duration (5:42)
 
-    // Theme state
-    let isDark = false;
+    // Theme state (Load persistent theme preference)
+    let isDark = localStorage.getItem('theme') === 'dark';
     const body = document.body;
     const htmlElement = document.documentElement;
 
@@ -1897,8 +1902,18 @@
     const sunIcon = themeToggle.querySelector('.icon-sun');
     const moonIcon = themeToggle.querySelector('.icon-moon');
 
+    // Sync initial theme icons based on saved state
+    if (isDark) {
+      sunIcon.style.display = 'none';
+      moonIcon.style.display = 'block';
+    } else {
+      sunIcon.style.display = 'block';
+      moonIcon.style.display = 'none';
+    }
+
     themeToggle.addEventListener('click', () => {
       isDark = !isDark;
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
       if (isDark) {
         htmlElement.setAttribute('data-theme', 'dark');
         sunIcon.style.display = 'none';
@@ -2133,7 +2148,6 @@
     const currentTimeText = document.getElementById('spotifyCurrentTime');
     const totalTimeText = document.getElementById('spotifyTotalTime');
     const progressContainer = document.getElementById('spotifyProgress');
-    const playerModeLabel = document.getElementById('playerModeLabel');
     const songTitleText = document.getElementById('songTitle');
     const songArtistText = document.getElementById('songArtist');
 
@@ -2151,12 +2165,10 @@
         // If MP3 is playing, show MP3 metadata or fetch config variables
         songTitleText.textContent = SONG_TITLE !== "Infinite Ambient Swell" ? SONG_TITLE : "Local Playlist Track";
         songArtistText.textContent = SONG_ARTIST !== "Synthesized Web Audio" ? SONG_ARTIST : "Local MP3 File";
-        playerModeLabel.textContent = "Yerel MP3 çalınıyor ('music/audio.mp3').";
       } else {
         // If synth loop is playing, display Synth info
         songTitleText.textContent = "Infinite Ambient Swell";
         songArtistText.textContent = "Synthesized Web Audio";
-        playerModeLabel.textContent = "Sanal sentezleyici çalıyor. 'music/audio.mp3' yükleyerek kendi şarkınızı çalabilirsiniz!";
         totalTimeText.textContent = formatTime(SONG_DURATION_SECONDS);
       }
     }
